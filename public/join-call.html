@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Call</title>
+</head>
+<body>
+    <h1>Join Call Page</h1>
+    <input type="text" id="channelInput" placeholder="Channel Name">
+    <input type="text" id="tokenInput" placeholder="Token">
+    <button id="joinCall">Join Call</button>
+    <button id="leaveCall" disabled>Leave Call</button>
+    <div id="remote-playerlist"></div>
+
+    <script src="https://cdn.agora.io/sdk/release/AgoraRTC_N.js"></script>
+    <script>
+        const APP_ID = '36a8711c6a374888bf3de28263b4b482';
+        let client;
+        let localAudioTrack;
+
+        // Autofill the input fields from the URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const channelName = urlParams.get('channel');
+        const token = urlParams.get('token');
+
+        if (channelName) {
+            document.getElementById('channelInput').value = channelName;
+        }
+        if (token) {
+            document.getElementById('tokenInput').value = token;
+        }
+
+        async function initializeClient() {
+            client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+            client.on('user-published', handleUserPublished);
+            client.on('user-unpublished', handleUserUnpublished);
+        }
+
+        async function handleUserPublished(user, mediaType) {
+            await client.subscribe(user, mediaType);
+            if (mediaType === 'audio') {
+                const remoteAudioTrack = user.audioTrack;
+                remoteAudioTrack.play();
+                addRemoteUser(user.uid);
+            }
+        }
+
+        function handleUserUnpublished(user) {
+            removeRemoteUser(user.uid);
+        }
+
+        function addRemoteUser(uid) {
+            const playerContainer = document.createElement('div');
+            playerContainer.className = 'remote-player';
+            playerContainer.id = `player-${uid}`;
+            playerContainer.innerHTML = `<p>User ${uid}</p>`;
+            document.getElementById('remote-playerlist').appendChild(playerContainer);
+        }
+
+        function removeRemoteUser(uid) {
+            const playerContainer = document.getElementById(`player-${uid}`);
+            if (playerContainer) {
+                playerContainer.remove();
+            }
+        }
+
+        document.getElementById('joinCall').onclick = async () => {
+            const channelName = document.getElementById('channelInput').value;
+            const token = document.getElementById('tokenInput').value;
+
+            if (!channelName || !token) {
+                alert('Please enter both channel name and token');
+                return;
+            }
+
+            try {
+                await initializeClient();
+                await client.join(APP_ID, channelName, token);
+                localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+                await client.publish([localAudioTrack]);
+
+                console.log('Successfully joined the call');
+                document.getElementById('joinCall').disabled = true;
+                document.getElementById('leaveCall').disabled = false;
+            } catch (error) {
+                console.error('Failed to join the call:', error);
+            }
+        };
+
+        document.getElementById('leaveCall').onclick = async () => {
+            try {
+                await client.leave();
+                localAudioTrack.close();
+                document.getElementById('remote-playerlist').innerHTML = '';
+
+                console.log('Left the call');
+                document.getElementById('joinCall').disabled = false;
+                document.getElementById('leaveCall').disabled = true;
+            } catch (error) {
+                console.error('Failed to leave the call:', error);
+            }
+        };
+    </script>
+</body>
+</html>
