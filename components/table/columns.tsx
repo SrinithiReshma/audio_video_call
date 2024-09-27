@@ -61,7 +61,7 @@ export const columns: ColumnDef<Appointment>[] = [
       const appointment = row.original;
 
       const doctor = Doctors.find(
-        (doctor) => doctor.name === appointment.primaryPhysician
+        (doctor) => doctor.name === appointment.primaryPhysician,
       );
 
       return (
@@ -118,7 +118,7 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Video Call",
     cell: ({ row }) => {
       const appointment = row.original;
-  
+
       return (
         <div className="flex items-center gap-2">
           {appointment.videoCall?.toLowerCase() === "yes" ? (
@@ -130,7 +130,7 @@ export const columns: ColumnDef<Appointment>[] = [
       );
     },
   },
-  
+
   {
     id: "actions",
     header: () => <div className="pl-4">Actions</div>,

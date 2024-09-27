@@ -18,7 +18,10 @@ export const CreateCallModal = ({
   appointment: { patient: { userId: string } }; // Define the shape of appointment
 }) => {
   const [open, setOpen] = useState(false);
-  const [callInfo, setCallInfo] = useState<{ channelName: string; token: string }>({
+  const [callInfo, setCallInfo] = useState<{
+    channelName: string;
+    token: string;
+  }>({
     channelName: "",
     token: "",
   });
@@ -51,9 +54,9 @@ export const CreateCallModal = ({
     }
   };
   const handleJoinCall = () => {
-    const url = new URL('/join-call.html', window.location.origin);
-    url.searchParams.append('channel', callInfo.channelName);
-    url.searchParams.append('token', callInfo.token);
+    const url = new URL("/join-call.html", window.location.origin);
+    url.searchParams.append("channel", callInfo.channelName);
+    url.searchParams.append("token", callInfo.token);
     window.location.href = url.toString();
   };
   return (

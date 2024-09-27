@@ -38,7 +38,7 @@ export const PatientFormValidation = z.object({
     .string()
     .refine(
       (emergencyContactNumber) => /^\+\d{10,15}$/.test(emergencyContactNumber),
-      "Invalid phone number"
+      "Invalid phone number",
     ),
   primaryPhysician: z.string().min(2, "Select at least one doctor"),
   insuranceProvider: z
@@ -96,7 +96,7 @@ export const ScheduleAppointmentSchema = z.object({
   note: z.string().optional(),
   cancellationReason: z.string().optional(),
   voiceCall: z.string().min(2, "Voice call preference is required"),
-  videoCall: z.string().min(2, "Video call preference is required"), 
+  videoCall: z.string().min(2, "Video call preference is required"),
 });
 
 export const CancelAppointmentSchema = z.object({
@@ -108,11 +108,9 @@ export const CancelAppointmentSchema = z.object({
     .string()
     .min(2, "Reason must be at least 2 characters")
     .max(500, "Reason must be at most 500 characters"),
-    voiceCall: z.string().min(2, "Voice call preference is required"),
-    videoCall: z.string().min(2, "Video call preference is required"), 
-    
+  voiceCall: z.string().min(2, "Voice call preference is required"),
+  videoCall: z.string().min(2, "Video call preference is required"),
 });
-
 
 export function getAppointmentSchema(type: string) {
   switch (type) {
