@@ -51,6 +51,7 @@ export const AppointmentForm = ({
       note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",
       voiceCall: appointment?.voiceCall || "",
+      videoCall: appointment?.videoCall || "",
     },
   });
 
@@ -81,7 +82,8 @@ export const AppointmentForm = ({
           reason: values.reason!,
           status: status as Status,
           note: values.note,
-          voiceCall: values.voiceCall
+          voiceCall: values.voiceCall,
+          videoCall: values.videoCall,
         };
 
         const newAppointment = await createAppointment(appointment);
@@ -101,7 +103,8 @@ export const AppointmentForm = ({
             schedule: new Date(values.schedule),
             status: status as Status,
             cancellationReason: values.cancellationReason,
-            voiceCall: values.voiceCall
+            voiceCall: values.voiceCall,
+            videoCall: values.videoCall,
           },
           type,
         };
@@ -203,6 +206,14 @@ export const AppointmentForm = ({
                 control={form.control}
                 name="voiceCall"
                 label="do you want to make voice call"
+                placeholder="yes or no"
+                disabled={type === "schedule"}
+              />
+              <CustomFormField
+                fieldType={FormFieldType.TEXTAREA}
+                control={form.control}
+                name="videoCall"
+                label="Do you want to make a video call?"
                 placeholder="yes or no"
                 disabled={type === "schedule"}
               />

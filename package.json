@@ -24,6 +24,7 @@
     "@sentry/nextjs": "^8.17.0",
     "@tanstack/react-table": "^8.17.0",
     "agora-access-token": "^2.0.4",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

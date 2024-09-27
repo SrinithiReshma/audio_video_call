@@ -12,7 +12,17 @@ import {
   messaging,
 } from "../appwrite.config";
 import { formatDateTime, parseStringify } from "../utils";
-
+type CreateAppointmentParams = {
+  userId: string;
+  patient: string;
+  primaryPhysician: string;
+  schedule: Date;
+  reason: string;
+  status: string;
+  note?: string;
+  voiceCall?: string;
+  videoCall: string; // Add videoCall here
+};
 //  CREATE APPOINTMENT
 export const createAppointment = async (
   appointment: CreateAppointmentParams

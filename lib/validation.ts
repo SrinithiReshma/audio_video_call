@@ -86,6 +86,7 @@ export const CreateAppointmentSchema = z.object({
   note: z.string().optional(),
   cancellationReason: z.string().optional(),
   voiceCall: z.string().min(2, "Voice call preference is required"),
+  videoCall: z.string().min(2, "Video call preference is required"),
 });
 
 export const ScheduleAppointmentSchema = z.object({
@@ -95,6 +96,7 @@ export const ScheduleAppointmentSchema = z.object({
   note: z.string().optional(),
   cancellationReason: z.string().optional(),
   voiceCall: z.string().min(2, "Voice call preference is required"),
+  videoCall: z.string().min(2, "Video call preference is required"), 
 });
 
 export const CancelAppointmentSchema = z.object({
@@ -107,6 +109,7 @@ export const CancelAppointmentSchema = z.object({
     .min(2, "Reason must be at least 2 characters")
     .max(500, "Reason must be at most 500 characters"),
     voiceCall: z.string().min(2, "Voice call preference is required"),
+    videoCall: z.string().min(2, "Video call preference is required"), 
     
 });
 

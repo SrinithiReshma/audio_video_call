@@ -11,6 +11,8 @@ import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
 import { Button } from "../ui/button";
 import { CreateCallModal } from "@/components/CreateCallModal";
+import { CreateCallModalForVideoCall } from "@/components/CreateCallModalForVideoCall"; // Adjust the path as needed
+
 import { useState } from "react";
 
 export const columns: ColumnDef<Appointment>[] = [
@@ -83,11 +85,11 @@ export const columns: ColumnDef<Appointment>[] = [
       const appointment = row.original;
       const voiceCall = appointment.voiceCall;
       const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal open/close
-   
+
       function handleVoiceCallClick() {
         setIsModalOpen(true); // Open modal on button click
       }
-   
+
       return (
         <div className="flex items-center gap-2">
           {voiceCall?.toLowerCase() === "yes" ? (
@@ -100,7 +102,8 @@ export const columns: ColumnDef<Appointment>[] = [
               >
                 <span>Start Call</span>
               </Button>
-              {isModalOpen && <CreateCallModal appointment={appointment}/>} {/* Render modal when state is true */}
+              {isModalOpen && <CreateCallModal appointment={appointment} />}{" "}
+              {/* Render modal when state is true */}
             </>
           ) : (
             <p className="text-14-medium">No</p>
@@ -108,12 +111,25 @@ export const columns: ColumnDef<Appointment>[] = [
         </div>
       );
     },
-
-  
   },
+
+  {
+    accessorKey: "videoCall",
+    header: "Video Call",
+    cell: ({ row }) => {
+      const appointment = row.original;
   
-   
-  
+      return (
+        <div className="flex items-center gap-2">
+          {appointment.videoCall?.toLowerCase() === "yes" ? (
+            <CreateCallModalForVideoCall appointment={appointment} />
+          ) : (
+            <p className="text-14-medium">No</p>
+          )}
+        </div>
+      );
+    },
+  },
   
   {
     id: "actions",
