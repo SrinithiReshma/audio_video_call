@@ -79,7 +79,12 @@ export const CreateCallModalForVideoCall = ({
           {loading ? "Creating..." : "Create Video Call"}
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        style={{
+          maxHeight: "400px", // Limit the maximum height of the dialog
+          overflowY: "auto",   // Add vertical scrollbar if content overflows
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Video Call Created</DialogTitle>
           <DialogDescription>
